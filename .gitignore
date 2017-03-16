@@ -1,0 +1,8 @@
+.DS_Store
+
+# Editor files
+/.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
