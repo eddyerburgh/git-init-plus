@@ -7,3 +7,6 @@ git init
 
 # Create LICENSE
 touch LICENSE
+
+# Create README.md
+touch README.md
