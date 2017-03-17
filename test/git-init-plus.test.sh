@@ -28,7 +28,7 @@ test_license_is_created()
 
 test_mit_license_created_when_MIT_passed_as_option()
 {
-  mit_content=$( cat ./licenses/MIT.txt )
+  mit_content=$( cat ../licenses/MIT.txt )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
   ../git-init-plus.sh -l MIT

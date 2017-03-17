@@ -11,9 +11,10 @@ touch LICENSE
 # Create README.md
 touch README.md
 
-working_dir=$(pwd)
+WORKING_PATH=$(pwd)
 
-cd "${0%/*}"
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
 
 # Get options
 while getopts l: option
@@ -25,6 +26,6 @@ do
 done
 
 if [ "$license" ]; then
-  cat ./licenses/MIT.txt >> "$workingdir/LICENSE"
+  cat "$WORKING_PATH/licenses/MIT.txt" >> "$SCRIPT_PATH/LICENSE"
 fi
 
