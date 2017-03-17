@@ -11,7 +11,7 @@ touch LICENSE
 # Create README.md
 touch README.md
 
-workingdir=$(pwd)
+working_dir=$(pwd)
 
 cd "${0%/*}"
 

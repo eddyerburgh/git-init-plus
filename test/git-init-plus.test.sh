@@ -1,6 +1,6 @@
 #! /bin/sh
 
-testGitIsInitialized()
+test_git_is_initialized()
 {
 
     mkdir temp-test-dir
@@ -14,7 +14,7 @@ testGitIsInitialized()
     rm -rf temp-test-dir
 }
 
-testLicenseIsCreated()
+test_license_is_created()
 {
 
     mkdir temp-test-dir
@@ -28,7 +28,7 @@ testLicenseIsCreated()
     rm -rf temp-test-dir
 }
 
-testLicenseContentIsCreatedWhenPassed()
+test_mit_license_created_when_MIT_passed_as_option()
 {
     mit_content=$( cat ./licenses/MIT.txt )
     mkdir temp-test-dir
@@ -41,7 +41,7 @@ testLicenseContentIsCreatedWhenPassed()
     rm -rf temp-test-dir
 }
 
-testREADMEIsCreated()
+test_README_is_created()
 {
 
     mkdir temp-test-dir
