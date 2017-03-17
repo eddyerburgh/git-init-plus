@@ -7,6 +7,7 @@ IFS=$'\n\t'
 #/ Examples: git-init-plus -l MIT
 #/ Options:
 #/   -l type of license to include (defaults to MIT)
+#/   -n copyright holders
 #/   --help: Display this help message
 usage() {
     grep '^#/' "$0" | cut -c4-
