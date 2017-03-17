@@ -2,6 +2,11 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+# Create path variables
+WORKING_PATH=$(pwd)
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
+
 # Initialize empty git repo
 git init
 
@@ -11,12 +16,7 @@ touch LICENSE
 # Create README.md
 touch README.md
 
-WORKING_PATH=$(pwd)
-
-SCRIPT=$(readlink -f "$0")
-SCRIPT_PATH=$(dirname "$SCRIPT")
-
-# Get options
+# Get options from command
 while getopts l: option
 do
   case "${option}"
@@ -26,6 +26,6 @@ do
 done
 
 if [ "$license" ]; then
-  cat "$WORKING_PATH/licenses/MIT.txt" >> "$SCRIPT_PATH/LICENSE"
+  cat "$SCRIPT_PATH/licenses/$license.txt" >> "$WORKING_PATH/LICENSE"
 fi
 
