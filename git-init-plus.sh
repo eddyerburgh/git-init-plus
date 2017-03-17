@@ -2,6 +2,18 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+#/ Usage: git-init-plus [options]
+#/ Description: Init a git project, LICENSE, README and .gitignore
+#/ Examples: git-init-plus -l MIT
+#/ Options:
+#/   -l type of license to include (defaults to MIT)
+#/   --help: Display this help message
+usage() {
+    grep '^#/' "$0" | cut -c4-
+    exit 0
+}
+expr "$*" : ".*--help" > /dev/null && usage
+
 # Logger
 readonly LOG_FILE="/tmp/$(basename "$0").log"
 info()    { echo "[INFO]    $@" | tee -a "$LOG_FILE" >&2 ; }
@@ -29,6 +41,7 @@ do
   case "${option}"
   in
     l) license=${OPTARG};;
+
   esac
 done
 
