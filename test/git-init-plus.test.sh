@@ -53,6 +53,17 @@ test_isc_license_created_when_ISC_passed_as_option()
   rm -rf temp-test-dir
 }
 
+test_error_thrown_when_l_option_does_not_exist_in_licenses()
+{
+  mkdir temp-test-dir
+  cd temp-test-dir  || exit
+ "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST
+  assertEquals 2 $?
+
+  cd ..
+  rm -rf temp-test-dir
+}
+
 test_README_is_created()
 {
   mkdir temp-test-dir

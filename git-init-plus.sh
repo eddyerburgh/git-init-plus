@@ -46,7 +46,13 @@ do
 done
 
 if [ "$license" ]; then
-  cat "$SCRIPT_PATH/licenses/$license.txt" >> "$WORKING_PATH/LICENSE"
+  license_reference_file="$SCRIPT_PATH/licenses/$license.txt"
+  if [ ! -e "$license_reference_file" ]; then
+      error "invalid license passed to function"
+      exit 2
+  fi
+
+  cat "$license_reference_file" >> "$WORKING_PATH/LICENSE"
   info "created $license license"
 fi
 
