@@ -64,3 +64,18 @@ test_mit_license_created_when_no_license_option_passed()
   cd ..
   rm -rf temp-test-dir
 }
+
+test_name_added_to_license_when_option_passed()
+{
+  mit_content=$( cat "$ROOT_PATH/licenses/MIT.txt" )
+  mkdir temp-test-dir
+  cd temp-test-dir  || exit
+ "$ROOT_PATH/git-init-plus.sh" -n "Edd Yerburgh"
+  contains_name=false
+  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true;fi
+
+  assertTrue "$contains_name"
+
+  cd ..
+  rm -rf temp-test-dir
+}

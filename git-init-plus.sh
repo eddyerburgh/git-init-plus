@@ -36,13 +36,14 @@ touch LICENSE
 touch README.md
 
 license=
+name=
 # Get options from command
-while getopts l: option
+while getopts l:n: option
 do
   case "${option}"
   in
     l) license=${OPTARG};;
-
+    n) name=${OPTARG};;
   esac
 done
 
@@ -58,6 +59,10 @@ if [ "$license" ]; then
 else
   cat "$SCRIPT_PATH/licenses/MIT.txt" >> "$WORKING_PATH/LICENSE"
   info "No license specified, defaulting to MIT (pass license with -l arg)"
+fi
+
+if [ "$name" ]; then
+  sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
 fi
 
 info "Success! New project initialized"
