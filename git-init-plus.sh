@@ -11,6 +11,10 @@ touch LICENSE
 # Create README.md
 touch README.md
 
+workingdir=$(pwd)
+
+cd "${0%/*}"
+
 # Get options
 while getopts l: option
 do
@@ -21,6 +25,6 @@ do
 done
 
 if [ "$license" ]; then
-    cat ../licenses/MIT.txt >> ./LICENSE
+    cat ./licenses/MIT.txt >> "$workingdir/LICENSE"
 fi
 
