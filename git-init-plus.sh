@@ -35,6 +35,7 @@ touch LICENSE
 # Create README.md
 touch README.md
 
+license=
 # Get options from command
 while getopts l: option
 do
@@ -48,11 +49,16 @@ done
 if [ "$license" ]; then
   license_reference_file="$SCRIPT_PATH/licenses/$license.txt"
   if [ ! -e "$license_reference_file" ]; then
-      error "invalid license passed to function"
+      error "Invalid license passed to function"
       exit 2
   fi
-
   cat "$license_reference_file" >> "$WORKING_PATH/LICENSE"
-  info "created $license license"
+  info "Created $license license"
+
+else
+  cat "$SCRIPT_PATH/licenses/MIT.txt" >> "$WORKING_PATH/LICENSE"
+  info "No license specified, defaulting to MIT (pass license with -l arg)"
 fi
+
+info "Success! New project initialized"
 

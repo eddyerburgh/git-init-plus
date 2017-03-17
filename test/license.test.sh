@@ -51,3 +51,16 @@ test_error_thrown_when_l_option_does_not_exist_in_licenses()
   cd ..
   rm -rf temp-test-dir
 }
+
+test_mit_license_created_when_no_license_option_passed()
+{
+  mit_content=$( cat "$ROOT_PATH/licenses/MIT.txt" )
+  mkdir temp-test-dir
+  cd temp-test-dir  || exit
+ "$ROOT_PATH/git-init-plus.sh"
+  license_content=$(cat "./LICENSE")
+  assertEquals "$mit_content" "$license_content"
+
+  cd ..
+  rm -rf temp-test-dir
+}
