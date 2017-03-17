@@ -18,13 +18,13 @@ cd "${0%/*}"
 # Get options
 while getopts l: option
 do
-        case "${option}"
-        in
-                l) license=${OPTARG};;
-        esac
+  case "${option}"
+  in
+    l) license=${OPTARG};;
+  esac
 done
 
 if [ "$license" ]; then
-    cat ./licenses/MIT.txt >> "$workingdir/LICENSE"
+  cat ./licenses/MIT.txt >> "$workingdir/LICENSE"
 fi
 
