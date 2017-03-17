@@ -1,18 +1,6 @@
 #! /bin/sh
 
 ROOT_PATH=$(pwd -P)
-test_git_is_initialized()
-{
-  mkdir temp-test-dir
-  cd temp-test-dir  || exit
-  "$ROOT_PATH/git-init-plus.sh"
-  exists=false
-  if test -f "./.git/hooks/commit-msg.sample"; then exists=true;fi
-  assertEquals true "$exists"
-
-  cd ..
-  rm -rf temp-test-dir
-}
 
 test_license_is_created()
 {
@@ -59,19 +47,6 @@ test_error_thrown_when_l_option_does_not_exist_in_licenses()
   cd temp-test-dir  || exit
  "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST
   assertEquals 2 $?
-
-  cd ..
-  rm -rf temp-test-dir
-}
-
-test_README_is_created()
-{
-  mkdir temp-test-dir
-  cd temp-test-dir  || exit
-  "$ROOT_PATH/git-init-plus.sh"
-  exists=false
-  if test -f "README.md"; then exists=true;fi
-  assertEquals true "$exists"
 
   cd ..
   rm -rf temp-test-dir
