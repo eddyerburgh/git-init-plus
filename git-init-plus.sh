@@ -66,6 +66,13 @@ fi
 # Add name to license
 if [ "$name" ]; then
   sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
+else
+  while [[ $name == '' ]]
+  do
+    read -p "What is the name(s) of the copyright holder(s): " name
+    sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
+    info "Name added to license"
+  done
 fi
 
 # Add date to license

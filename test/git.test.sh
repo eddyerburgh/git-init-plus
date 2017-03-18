@@ -6,7 +6,7 @@ test_git_is_initialized()
 {
   mkdir temp-test-dir
   cd temp-test-dir  || exit
-  "$ROOT_PATH/git-init-plus.sh"
+  "$ROOT_PATH/git-init-plus.sh" -n Edd
   exists=false
   if test -f "./.git/hooks/commit-msg.sample"; then exists=true;fi
   assertEquals true "$exists"
