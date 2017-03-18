@@ -50,7 +50,7 @@ LICENSE="$WORKING_PATH/LICENSE"
 
 # Add License content
 if [ "$license" ]; then
-  license_reference_file="$SCRIPT_PATH/licenses/$license.txt"
+  license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
   if [ ! -e "$license_reference_file" ]; then
       error "Invalid license passed to function"
       exit 2
@@ -59,7 +59,7 @@ if [ "$license" ]; then
   info "Created $license license"
 
 else
-  cat "$SCRIPT_PATH/licenses/MIT.txt" >> "$LICENSE"
+  cat "$SCRIPT_PATH/resources/licenses/MIT.txt" >> "$LICENSE"
   info "No license specified, defaulting to MIT (pass license with -l arg)"
 fi
 

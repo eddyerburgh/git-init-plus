@@ -18,7 +18,7 @@ test_license_is_created()
 
 test_mit_license_created_when_MIT_passed_as_option()
 {
-  mit_content=$( < "$ROOT_PATH/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  mit_content=$( < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
  "$ROOT_PATH/git-init-plus.sh" -l MIT -n Edd -p project
@@ -31,7 +31,7 @@ test_mit_license_created_when_MIT_passed_as_option()
 
 test_isc_license_created_when_ISC_passed_as_option()
 {
-  isc_content=$( < "$ROOT_PATH/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  isc_content=$( < "$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
   "$ROOT_PATH/git-init-plus.sh" -l ISC -n Edd -p project
@@ -56,7 +56,7 @@ test_error_thrown_when_l_option_does_not_exist_in_licenses()
 
 test_mit_license_created_when_no_license_option_passed()
 {
-  mit_content=$( < "$ROOT_PATH/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  mit_content=$( < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
  "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
@@ -69,7 +69,7 @@ test_mit_license_created_when_no_license_option_passed()
 
 test_name_added_to_license_when_option_passed()
 {
-  mit_content=$(< "$ROOT_PATH/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  mit_content=$(< "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
  "$ROOT_PATH/git-init-plus.sh" -n "Edd Yerburgh" -p project
@@ -84,7 +84,7 @@ test_name_added_to_license_when_option_passed()
 
 test_prompt_for_name_and_added_to_license()
 {
-  mit_content=$(< "$ROOT_PATH/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  mit_content=$(< "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
   mkdir temp-test-dir
   cd temp-test-dir  || exit
   printf "Edd Yerburgh\n" | "$ROOT_PATH/git-init-plus.sh" -p project
