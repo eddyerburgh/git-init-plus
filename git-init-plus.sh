@@ -82,10 +82,9 @@ sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 touch README.md
 README="$WORKING_PATH/README.md"
 
-# Add project na
-me to README
+# Add project name as title of README
 if [ "$project_name" ]; then
-  echo "# $project_name" > "$README"
+  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
 fi
 
 info "Success! New project initialized"
