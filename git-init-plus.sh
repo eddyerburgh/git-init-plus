@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 IFS=$'\n\t'
 
@@ -69,14 +69,13 @@ if [ "$name" ]; then
 else
   while [[ $name == '' ]]
   do
-    read -p "What is the name(s) of the copyright holder(s): " name
-    sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
-    info "Name added to license"
+    read -p "What is the name(s) of the copyright holder(s):" name
   done
+  sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
+  info "Name added to license"
 fi
 
 # Add date to license
 sed -i "s/<year>/$(date +"%Y")/g" "$WORKING_PATH/LICENSE"
 
 info "Success! New project initialized"
-

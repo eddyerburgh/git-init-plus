@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/usr/bin/env bash
 
 ROOT_PATH=$(pwd -P)
 CURRENT_YEAR=$(date +"%Y")
