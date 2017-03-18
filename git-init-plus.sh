@@ -79,12 +79,20 @@ fi
 sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 # Create README.md
+[ -e README.md ] && rm README.md
 touch README.md
 README="$WORKING_PATH/README.md"
 
 # Add project name as title of README
 if [ "$project_name" ]; then
   echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
+else
+  while [[ $project_name == '' ]]
+  do
+    read -p "What is the name your project (added as title to README):" project_name
+  done
+  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
+  info "Title added to README"
 fi
 
 info "Success! New project initialized"
