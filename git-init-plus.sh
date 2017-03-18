@@ -48,6 +48,7 @@ do
   esac
 done
 
+# Add License content
 if [ "$license" ]; then
   license_reference_file="$SCRIPT_PATH/licenses/$license.txt"
   if [ ! -e "$license_reference_file" ]; then
@@ -62,9 +63,13 @@ else
   info "No license specified, defaulting to MIT (pass license with -l arg)"
 fi
 
+# Add name to license
 if [ "$name" ]; then
   sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
 fi
+
+# Add date to license
+sed -i "s/<year>/$(date +"%Y")/g" "$WORKING_PATH/LICENSE"
 
 info "Success! New project initialized"
 
