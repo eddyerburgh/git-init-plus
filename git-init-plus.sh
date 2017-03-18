@@ -27,26 +27,26 @@ WORKING_PATH=$(pwd)
 SCRIPT=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 
-# Initialize empty git repo
-git init
-
-# Create LICENSE
-touch LICENSE
-
-# Create README.md
-touch README.md
-
+# Get options from command
 license=
 name=
-# Get options from command
-while getopts l:n: option
+project_name=
+while getopts l:n:p: option
 do
   case "${option}"
   in
     l) license=${OPTARG};;
     n) name=${OPTARG};;
+    p) project_name=${OPTARG};;
   esac
 done
+
+# Initialize empty git repo
+git init
+
+# Create LICENSE
+touch LICENSE
+LICENSE="$WORKING_PATH/LICENSE"
 
 # Add License content
 if [ "$license" ]; then
@@ -55,27 +55,37 @@ if [ "$license" ]; then
       error "Invalid license passed to function"
       exit 2
   fi
-  cat "$license_reference_file" >> "$WORKING_PATH/LICENSE"
+  cat "$license_reference_file" >> "$LICENSE"
   info "Created $license license"
 
 else
-  cat "$SCRIPT_PATH/licenses/MIT.txt" >> "$WORKING_PATH/LICENSE"
+  cat "$SCRIPT_PATH/licenses/MIT.txt" >> "$LICENSE"
   info "No license specified, defaulting to MIT (pass license with -l arg)"
 fi
 
 # Add name to license
 if [ "$name" ]; then
-  sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
+  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
 else
   while [[ $name == '' ]]
   do
     read -p "What is the name(s) of the copyright holder(s):" name
   done
-  sed -i "s/<copyright holders>/$name/g" "$WORKING_PATH/LICENSE"
+  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
   info "Name added to license"
 fi
 
 # Add date to license
-sed -i "s/<year>/$(date +"%Y")/g" "$WORKING_PATH/LICENSE"
+sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
+
+# Create README.md
+touch README.md
+README="$WORKING_PATH/README.md"
+
+# Add project na
+me to README
+if [ "$project_name" ]; then
+  echo "# $project_name" > "$README"
+fi
 
 info "Success! New project initialized"
