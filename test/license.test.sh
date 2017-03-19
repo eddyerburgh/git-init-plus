@@ -43,8 +43,26 @@ test_isc_license_created_when_ISC_passed_as_option()
 
 test_error_thrown_when_l_option_does_not_exist_in_licenses()
 {
- "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
-  assertEquals 1 $?
+  "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
+   assertEquals 1 $?
+}
+
+test_error_thrown_lists_all_licences_available_in_resources()
+{
+  [ -e "/tmp/git-init-plus.log" ] && rm -rf "/tmp/git-init-plus.log"
+  "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
+  licenses_list=""
+  for file in $ROOT_PATH/resources/licenses/*.txt; do
+    if [ ! "$licenses_list" ]; then
+      licenses_list=$(basename "${file%.*}")
+    else
+      licenses_list="$licenses_list, $(basename "${file%.*}")"
+    fi
+  done
+  expected_message="Invalid license passed to function. Available licenses are ${licenses_list}"
+  log_message=$(cat "/tmp/git-init-plus.log")
+  cat "/tmp/git-init-plus.log"
+  assertEquals "${expected_message}" "${log_message}"
 }
 
 test_mit_license_created_when_no_license_option_passed()

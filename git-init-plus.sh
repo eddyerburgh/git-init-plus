@@ -19,9 +19,9 @@ expr "$*" : ".*--help" > /dev/null && usage
 expr "$*" : ".*-h" > /dev/null && usage
 
 # Logger
-readonly LOG_FILE="/tmp/$(basename "$0").log"
+readonly LOG_FILE="/tmp/git-init-plus.log"
 info()    { echo "$@" | tee -a "$LOG_FILE" >&2 ; }
-fatal()   { echo "[FATAL]   $@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
+fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 
@@ -67,7 +67,15 @@ LICENSE="$WORKING_PATH/LICENSE"
 if [ "$license" ]; then
   license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
   if [ ! -e "$license_reference_file" ]; then
-      fatal "Invalid license passed to function"
+    licenses_list=""
+    for file in $SCRIPT_PATH/resources/licenses/*.txt; do
+      if [ ! "$licenses_list" ]; then
+        licenses_list=$(basename "${file%.*}")
+      else
+        licenses_list="$licenses_list, $(basename "${file%.*}")"
+      fi
+    done
+    fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
   fi
   cat "$license_reference_file" >> "$LICENSE"
   info "Created $license license"

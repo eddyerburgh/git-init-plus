@@ -4,7 +4,7 @@ ROOT_PATH=$(pwd -P)
 
 setUp()
 {
-  [ -e "~/Downloads/master.zip" ] && rm "~/Downloads/master.zip"
+  [ -e "$HOME/Downloads/master.zip" ] && rm "$HOME/Downloads/master.zip"
   [ -e "/opt/git-init-plus-master.zip" ] && rm "/opt/git-init-plus-master.zip"
   [ -e "/opt/git-init-plus-master" ] && rm -rf "/opt/git-init-plus-master"
   [ -e "/opt/git-init-plus" ] && rm -rf "/opt/git-init-plus"
