@@ -79,9 +79,9 @@ fi
 sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 # Create README.md
-[ -e README.md ] && rm README.md
-touch README.md
 README="$WORKING_PATH/README.md"
+[ -e "$README" ] && rm "$README"
+touch "$README"
 
 # Add project name as title of README
 if [ "$project_name" ]; then
@@ -94,5 +94,11 @@ else
   echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
   info "Title added to README"
 fi
+
+# Copy .gitignore
+GITIGNORE="$WORKING_PATH/.gitignore"
+[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
+cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
+info ".gitignore added"
 
 info "Success! New project initialized"
