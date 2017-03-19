@@ -4,10 +4,8 @@ IFS=$'\n\t'
 
 # Logger
 readonly LOG_FILE="/tmp/$(basename "$0").log"
-info()    { echo "[INFO]    $@" | tee -a "$LOG_FILE" >&2 ; }
-warning() { echo "[WARNING] $@" | tee -a "$LOG_FILE" >&2 ; }
-error()   { echo "[ERROR]   $@" | tee -a "$LOG_FILE" >&2 ; }
-fatal()   { echo "[FATAL]   $@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
+info()    { echo "$@" | tee -a "$LOG_FILE" >&2 ; }
+fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 wget https://github.com/eddyerburgh/git-init-plus/archive/master.zip
 
@@ -20,8 +18,7 @@ if [ -e "/opt/git-init-plus-master.zip" ]; then
       mv master.zip /opt/git-init-plus-master.zip
       ;;
     *)
-      info "Install exiting. Please rename /opt/git-init-plus-master.zip and rerun install script"
-      exit 2
+      fatal "Install exiting. Please rename /opt/git-init-plus-master.zip and rerun install script"
     ;;
   esac
 else
@@ -35,8 +32,7 @@ if [ -e "/opt/git-init-plus-master" ]; then
       rm -rf "/opt/git-init-plus-master"
       ;;
     *)
-      info "Install exiting. Please rename /opt/git-init-plus-master and rerun install script"
-      exit 2
+      fatal "Install exiting. Please rename /opt/git-init-plus-master and rerun install script"
     ;;
   esac
 fi
@@ -48,8 +44,7 @@ if [ -e "/opt/git-init-plus" ]; then
       rm -rf "/opt/git-init-plus"
       ;;
     *)
-      info "Install exiting. Please rename /opt/git-init-plus and rerun install script"
-      exit 2
+      fatal "Install exiting. Please rename /opt/git-init-plus and rerun install script"
     ;;
   esac
 fi
