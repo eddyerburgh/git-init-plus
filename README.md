@@ -19,6 +19,12 @@ The install file clones this directory to /opts/git-init-plus and creates a sym-
 ## Usage
 
 ```
+git-init-plus
+```
+
+Will walk you through creation of a new git project.
+
+```
 git-init-plus -l ISC -n Edd -p project-name
 ```
 
@@ -26,8 +32,12 @@ Will initialize git, add an ISC LICENSE, a README.md with project-name as a titl
 
 If .git, README.md or LICENSE already exist, git-init-plus will prompt you to verify whether it should replace the file.
 
-```
-git-init-plus
-```
+## Options
 
-Will prompt you for the copyright holders name(s) and project title
+| Parameter | Usage         | Example        |
+| --------- | ------------- | -------------- |
+| -h        | prints out usage | git-init-plus -h |
+| -l        | name of license to create | git-init-plus -l Apache |
+| -n        | name of copyright holder(s) to be added to LICENSE | git-init-plus -n Edd |
+| -p | project name to be added as title to README.md | git-init-plus -p git-init-plus
+
