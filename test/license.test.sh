@@ -44,7 +44,7 @@ test_isc_license_created_when_ISC_passed_as_option()
 test_error_thrown_when_l_option_does_not_exist_in_licenses()
 {
  "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
-  assertEquals 2 $?
+  assertEquals 1 $?
 }
 
 test_mit_license_created_when_no_license_option_passed()
