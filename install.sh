@@ -20,7 +20,6 @@ info "Downloading zip from github"
 mv master.zip /opt/git-init-plus-master.zip
 
 cd /opt
-
 unzip git-init-plus-master.zip
 
 mv git-init-plus-master git-init-plus
@@ -30,3 +29,8 @@ ROOT_DIR=/opt/git-init-plus
 chmod +x "$ROOT_DIR/git-init-plus.sh"
 
 ln -sf "$ROOT_DIR/git-init-plus.sh" /usr/local/bin/git-init-plus
+
+info "Success! git-init-plus is installed in /usr/local/bin
+Run git-init-plus to start a new git project
+If git-init-plus is no recognised as a command, add /usr/loca/bin to your PATH
+"

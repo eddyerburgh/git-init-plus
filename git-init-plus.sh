@@ -42,7 +42,20 @@ do
 done
 
 # Initialize empty git repo
-git init
+if [ -d "$WORKING_PATH/.git" ]; then
+  read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
+  case "$response" in
+    [yY][eE][sS]|[yY]) 
+      git init
+      ;;
+    *)
+      info "Program exiting"
+      exit 2
+    ;;
+  esac
+else
+  git init
+fi
 
 # Create LICENSE
 touch LICENSE
