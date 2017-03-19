@@ -36,8 +36,8 @@ If .git, README.md or LICENSE already exist, git-init-plus will prompt you to ve
 
 | Parameter | Usage         | Example        |
 | --------- | ------------- | -------------- |
+| -l        | name of license to create (defaults to MIT) | git-init-plus -l Apache |
+| -n        | name(s) of copyright holder(s) to be added to LICENSE | git-init-plus -n Edd |
+| -p        | project name to be added as title to README.md | git-init-plus -p git-init-plus
 | -h        | prints out usage | git-init-plus -h |
-| -l        | name of license to create | git-init-plus -l Apache |
-| -n        | name of copyright holder(s) to be added to LICENSE | git-init-plus -n Edd |
-| -p | project name to be added as title to README.md | git-init-plus -p git-init-plus
-
+| --help    | prints out usage | git-init-plus --help |

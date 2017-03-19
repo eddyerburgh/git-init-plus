@@ -4,16 +4,19 @@ IFS=$'\n\t'
 
 #/ Usage: git-init-plus [options]
 #/ Description: Init a git project, LICENSE, README and .gitignore
-#/ Examples: git-init-plus -l MIT
+#/ Examples: git-init-plus -l MIT -n Edd -p project-name
 #/ Options:
-#/   -l type of license to include (defaults to MIT)
-#/   -n copyright holders
+#/   -l name of license to create (defaults to MIT)
+#/   -n name(s) of copyright holder(s) to be added to LICENSE
+#/   -p project name to be added as title to README.md
+#/   -h: Display this help message
 #/   --help: Display this help message
 usage() {
     grep '^#/' "$0" | cut -c4-
     exit 0
 }
 expr "$*" : ".*--help" > /dev/null && usage
+expr "$*" : ".*-h" > /dev/null && usage
 
 # Logger
 readonly LOG_FILE="/tmp/$(basename "$0").log"
