@@ -20,9 +20,7 @@ expr "$*" : ".*-h" > /dev/null && usage
 
 # Logger
 readonly LOG_FILE="/tmp/$(basename "$0").log"
-info()    { echo "[INFO]    $@" | tee -a "$LOG_FILE" >&2 ; }
-warning() { echo "[WARNING] $@" | tee -a "$LOG_FILE" >&2 ; }
-error()   { echo "[ERROR]   $@" | tee -a "$LOG_FILE" >&2 ; }
+info()    { echo "$@" | tee -a "$LOG_FILE" >&2 ; }
 fatal()   { echo "[FATAL]   $@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 # Create path variables
@@ -52,8 +50,7 @@ if [ -d "$WORKING_PATH/.git" ]; then
       git init
       ;;
     *)
-      info "Program exiting"
-      exit 2
+      fatal "Program exiting"
     ;;
   esac
 else
@@ -68,8 +65,7 @@ LICENSE="$WORKING_PATH/LICENSE"
 if [ "$license" ]; then
   license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
   if [ ! -e "$license_reference_file" ]; then
-      error "Invalid license passed to function"
-      exit 2
+      fatal "Invalid license passed to function"
   fi
   cat "$license_reference_file" >> "$LICENSE"
   info "Created $license license"
