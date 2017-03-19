@@ -23,6 +23,8 @@ readonly LOG_FILE="/tmp/$(basename "$0").log"
 info()    { echo "$@" | tee -a "$LOG_FILE" >&2 ; }
 fatal()   { echo "[FATAL]   $@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
+command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
+
 # Create path variables
 WORKING_PATH=$(pwd)
 SCRIPT=$(readlink -f "$0")
