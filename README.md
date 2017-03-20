@@ -3,10 +3,20 @@
 Shell script to kick start a git project
 
 Initializes git, creates LICENSE, adds .gitignore (from [universal-gitignore](https://github.com/eddyerburgh/universal-gitignore)) and creates a README.md with your project title
+## Table of contents
 
-## Installation
+*[Installation](#installation)
+  *[Linux](#installation-linux)
+  *[OSX](#installation-osx)
+  *[Windows](#installation-windows)
+*[Usage](#usage)
+*[Options](#options)
 
-On linx/unix run:
+## <a name="installation"></a>Installation
+
+### <a name="installation-linux"></a>Linux
+
+In your terminal run:
 
 ```shell
 wget https://raw.githubusercontent.com/eddyerburgh/git-init-plus/master/install.sh && chmod +x install.sh && sudo ./install.sh
@@ -14,9 +24,17 @@ wget https://raw.githubusercontent.com/eddyerburgh/git-init-plus/master/install.
 
 This script downloads the install file, makes it executable and runs it
 
-The install file clones this directory to /opts/git-init-plus and creates a sym-link for the git-init-plus script in /usr/local/bin 
+The install file adds this directory to /opts/git-init-plus and creates a sym-link for the git-init-plus script in /usr/local/bin
 
-## Usage
+### <a name="installation-osx"></a>OSX
+
+Currently unavailable. Coming soon!
+
+### <a name="installation-windows"></a>Windows
+
+Currently unavailable
+
+## <a name="usage"></a>Usage
 
 ```
 git-init-plus
@@ -32,7 +50,7 @@ Will initialize git, add an ISC LICENSE, a README.md with project-name as a titl
 
 If .git, README.md or LICENSE already exist, git-init-plus will prompt you to verify whether it should replace the file
 
-## Options
+## <a name="options"></a>Options
 
 | Parameter | Usage         | Example        |
 | --------- | ------------- | -------------- |
