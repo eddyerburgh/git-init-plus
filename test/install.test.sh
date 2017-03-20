@@ -10,12 +10,12 @@ setUp()
   [ -e "/opt/git-init-plus" ] && rm -rf "/opt/git-init-plus"
   [ -e "test-dir" ] && rm -rf "test-dir"
   mkdir test-dir
-  cd test-dir
+  cd test-dir || exit
 }
 
 tearDown()
 {
-    cd ..
+    cd .. || exit
     rm -rf test-dir
 }
 
@@ -33,7 +33,7 @@ test_it_requires_prompt_to_delete_git_init_zip_in_opt()
   touch "$ZIP_FILE"
   echo "Content" > "$ZIP_FILE"
   mkdir test-dir
-  cd test-dir
+  cd test-dir || exit
   printf "n" | "$ROOT_PATH/install.sh"
 
   zip_not_replaced=false
@@ -48,7 +48,7 @@ test_it_requires_prompt_to_delete_git_init_master_dir_in_opt()
   touch "$GIT_INIT_MASTER_DIR/example"
   echo "Content" > "$GIT_INIT_MASTER_DIR/example"
   mkdir test-dir
-  cd test-dir
+  cd test-dir || exit
   printf "n" | "$ROOT_PATH/install.sh"
 
   file_not_replaced=false
@@ -63,7 +63,7 @@ test_it_requires_prompt_to_delete_git_init_dir_in_opt()
   touch "$GIT_INIT_DIR/example"
   echo "Content" > "$GIT_INIT_DIR/example"
   mkdir test-dir
-  cd test-dir
+  cd test-dir || exit
   printf "n" | "$ROOT_PATH/install.sh"
 
   file_not_replaced=false
