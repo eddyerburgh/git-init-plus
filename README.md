@@ -6,9 +6,9 @@ Initializes git, creates LICENSE, adds .gitignore (from [universal-gitignore](ht
 ## Table of contents
 
 *[Installation](#installation)
-  *[Linux](#installation-linux)
-  *[OSX](#installation-osx)
-  *[Windows](#installation-windows)
+..*[Linux](#installation-linux)
+..*[OSX](#installation-osx)
+..*[Windows](#installation-windows)
 *[Usage](#usage)
 *[Options](#options)
 
