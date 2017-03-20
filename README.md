@@ -5,12 +5,12 @@ Shell script to kick start a git project
 Initializes git, creates LICENSE, adds .gitignore (from [universal-gitignore](https://github.com/eddyerburgh/universal-gitignore)) and creates a README.md with your project title
 ## Table of contents
 
-*[Installation](#installation)
-..*[Linux](#installation-linux)
-..*[OSX](#installation-osx)
-..*[Windows](#installation-windows)
-*[Usage](#usage)
-*[Options](#options)
+* [Installation](#installation)
+   * [Linux](#installation-linux)
+   * [OSX](#installation-osx)
+   * [Windows](#installation-windows)
+* [Usage](#usage)
+* [Options](#options)
 
 ## <a name="installation"></a>Installation
 
@@ -36,13 +36,13 @@ Currently unavailable
 
 ## <a name="usage"></a>Usage
 
-```
+```shell
 git-init-plus
 ```
 
 Will walk you through creation of a new git project
 
-```
+```shell
 git-init-plus -l ISC -n Edd -p project-name
 ```
 
