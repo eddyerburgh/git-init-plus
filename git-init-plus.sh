@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 set -euo pipefail
-IFS=$'\n\t'
 
 #/ Usage: git-init-plus [options]
 #/ Description: Init a git project, LICENSE, README and .gitignore
@@ -25,10 +24,25 @@ fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 
+case "$OSTYPE" in
+    darwin*)  PLATFORM="OSX" ;;
+    linux*)   PLATFORM="LINUX" ;;
+    bsd*)     PLATFORM="BSD" ;;
+    *)        PLATFORM="UNKNOWN" ;;
+esac
+
+replace() {
+    if [[ "$PLATFORM" == "OSX" || "$PLATFORM" == "BSD" ]]; then
+        sed -i "" "$1" "$2"
+    elif [ "$PLATFORM" == "LINUX" ]; then
+        sed -i "$1" "$2"
+    fi
+}
+
+
 # Create path variables
-WORKING_PATH=$(pwd)
-SCRIPT=$(readlink -f "$0")
-SCRIPT_PATH=$(dirname "$SCRIPT")
+WORKING_PATH="$(pwd)"
+SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd -P)"
 
 # Get options from command
 license=
@@ -48,7 +62,7 @@ done
 if [ -d "$WORKING_PATH/.git" ]; then
   read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
   case "$response" in
-    [yY][eE][sS]|[yY]) 
+    [yY][eE][sS]|[yY])
       git init
       ;;
     *)
@@ -87,18 +101,18 @@ fi
 
 # Add name to license
 if [ "$name" ]; then
-  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+  replace "s/<copyright holders>/$name/g" "$LICENSE"
 else
   while [[ $name == '' ]]
   do
     read -p "What is the name(s) of the copyright holder(s):" name
   done
-  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+  replace "s/<copyright holders>/$name/g" "$LICENSE"
   info "Name added to license"
 fi
 
 # Add date to license
-sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
+replace "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 # Create README.md
 README="$WORKING_PATH/README.md"

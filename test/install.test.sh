@@ -8,9 +8,9 @@ setUp()
   [ -e "/opt/git-init-plus-master.zip" ] && rm "/opt/git-init-plus-master.zip"
   [ -e "/opt/git-init-plus-master" ] && rm -rf "/opt/git-init-plus-master"
   [ -e "/opt/git-init-plus" ] && rm -rf "/opt/git-init-plus"
-  [ -e "test-dir" ] && rm -rf "test-dir"
-  mkdir test-dir
-  cd test-dir || exit
+  [ -e "temp-test-dir" ] && rm -rf "temp-test-dir"
+  mkdir temp-test-dir
+  cd temp-test-dir || exit
 }
 
 tearDown()

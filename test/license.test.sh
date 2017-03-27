@@ -3,11 +3,27 @@
 ROOT_PATH=$(pwd -P)
 CURRENT_YEAR=$(date +"%Y")
 
+case "$OSTYPE" in
+    darwin*)  PLATFORM="OSX" ;;
+    linux*)   PLATFORM="LINUX" ;;
+    bsd*)     PLATFORM="BSD" ;;
+    *)        PLATFORM="UNKNOWN" ;;
+esac
+
+replace() {
+    if [[ "$PLATFORM" == "OSX" || "$PLATFORM" == "BSD" ]]; then
+        sed -i "" "$1" "$2"
+    elif [ "$PLATFORM" == "LINUX" ]; then
+        sed -i "$1" "$2"
+    fi
+}
+
 setUp()
 {
   [ -e "temp-test-dir" ] && rm -rf "temp-test-dir"
   mkdir temp-test-dir
   cd temp-test-dir  || exit
+  pwd
 }
 
 tearDown()
@@ -26,7 +42,8 @@ test_license_is_created()
 
 test_mit_license_created_when_MIT_passed_as_option()
 {
-  mit_content=$( < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+
+  mit_content=$( cat "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
  "$ROOT_PATH/git-init-plus.sh" -l MIT -n Edd -p project
   license_content=$(< "./LICENSE")
   assertEquals "$mit_content" "$license_content"
@@ -34,7 +51,7 @@ test_mit_license_created_when_MIT_passed_as_option()
 
 test_isc_license_created_when_ISC_passed_as_option()
 {
-  isc_content=$( < "$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  isc_content=$( cat "$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
   "$ROOT_PATH/git-init-plus.sh" -l ISC -n Edd -p project
   license_content=$(< "./LICENSE")
 
@@ -67,7 +84,7 @@ test_error_thrown_lists_all_licences_available_in_resources()
 
 test_mit_license_created_when_no_license_option_passed()
 {
-  mit_content=$( < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+  mit_content=$( cat "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
  "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
   license_content=$(< "./LICENSE")
   assertEquals "$mit_content" "$license_content"
