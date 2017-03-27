@@ -28,7 +28,15 @@ The install file adds this directory to /opts/git-init-plus and creates a sym-li
 
 ### <a name="installation-osx"></a>OSX
 
-Currently unavailable. Coming soon!
+```shell
+curl -O https://raw.githubusercontent.com/eddyerburgh/git-init-plus/master/install.sh && chmod +x install.sh && sudo ./install.sh
+```
+
+And add usr/local/bin to PATH, in ```~/.bash_profile```
+
+```shell
+export PATH="/usr/local/bin:$PATH"
+```
 
 ### <a name="installation-windows"></a>Windows
 
