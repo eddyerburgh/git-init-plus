@@ -9,7 +9,7 @@ fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "The install script requires git but it's not installed.  Aborting."; }
 
-wget https://github.com/eddyerburgh/git-init-plus/archive/master.zip
+curl -LOk https://github.com/eddyerburgh/git-init-plus/archive/master.zip
 
 # Prompt for permission to remove any existing files/folders that are used in install
 if [ -e "/opt/git-init-plus-master.zip" ]; then
