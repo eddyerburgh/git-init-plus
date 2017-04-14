@@ -1,6 +1,18 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+shopt -s expand_aliases
+
+[[ $(uname) == 'Darwin' ]] && {
+	which greadlink gsed > /dev/null && {
+      unalias readlink sed
+		alias readlink=greadlink sed=gsed
+	} || {
+		echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
+		exit 1
+	}
+}
+
 #/ Usage: git-init-plus [options]
 #/ Description: Init a git project, LICENSE, README and .gitignore
 #/ Examples: git-init-plus -l MIT -n Edd -p project-name
@@ -24,25 +36,10 @@ fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 
-case "$OSTYPE" in
-    darwin*)  PLATFORM="OSX" ;;
-    linux*)   PLATFORM="LINUX" ;;
-    bsd*)     PLATFORM="BSD" ;;
-    *)        PLATFORM="UNKNOWN" ;;
-esac
-
-replace() {
-    if [[ "$PLATFORM" == "OSX" || "$PLATFORM" == "BSD" ]]; then
-        sed -i "" "$1" "$2"
-    elif [ "$PLATFORM" == "LINUX" ]; then
-        sed -i "$1" "$2"
-    fi
-}
-
-
 # Create path variables
 WORKING_PATH="$(pwd)"
-SCRIPT_PATH="$(cd "$(dirname "$0")" && pwd -P)"
+SCRIPT=$(readlink -f "$0")
+SCRIPT_PATH=$(dirname "$SCRIPT")
 
 # Get options from command
 license=
@@ -101,18 +98,18 @@ fi
 
 # Add name to license
 if [ "$name" ]; then
-  replace "s/<copyright holders>/$name/g" "$LICENSE"
+  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
 else
   while [[ $name == '' ]]
   do
-    read -p "What is the name(s) of the copyright holder(s):" name
+    read -r -p "What is the name(s) of the copyright holder(s):" name
   done
-  replace "s/<copyright holders>/$name/g" "$LICENSE"
+  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
   info "Name added to license"
 fi
 
 # Add date to license
-replace "s/<year>/$(date +"%Y")/g" "$LICENSE"
+sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 # Create README.md
 README="$WORKING_PATH/README.md"
@@ -125,7 +122,7 @@ if [ "$project_name" ]; then
 else
   while [[ $project_name == '' ]]
   do
-    read -p "What is the name your project (added as title to README):" project_name
+    read -r -p "What is the name your project (added as title to README):" project_name
   done
   echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
   info "Title added to README"
