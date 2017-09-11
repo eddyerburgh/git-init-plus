@@ -3,15 +3,19 @@ set -euo pipefail
 
 shopt -s expand_aliases
 
-[[ $(uname) == 'Darwin' ]] && {
-	which greadlink gsed > /dev/null && {
-      unalias readlink sed
-		alias readlink=greadlink sed=gsed
-	} || {
-		echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
-		exit 1
+function patch_readlink() {
+	[[ $(uname) == 'Darwin' ]] && {
+		which greadlink gsed > /dev/null && {
+	      unalias readlink sed
+			alias readlink=greadlink sed=gsed
+		} || {
+			echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
+			exit 1
+		}
 	}
 }
+
+patch_readlink
 
 #/ Usage: git-init-plus [options]
 #/ Description: Init a git project, LICENSE, README and .gitignore
