@@ -137,12 +137,16 @@ create_license() {
 	fi
 
 }
-create_license
 
-# Copy .gitignore
-GITIGNORE="$WORKING_PATH/.gitignore"
-[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
-cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
-info ".gitignore added"
+create_gitignore() {
+	# Copy .gitignore
+	GITIGNORE="$WORKING_PATH/.gitignore"
+	[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
+	cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
+	info ".gitignore added"
+}
+
+create_license
+create_gitignore
 
 info "Success! New project initialized"
