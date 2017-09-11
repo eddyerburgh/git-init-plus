@@ -40,12 +40,12 @@ fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 
-# Create path variables
+# Path variables
 WORKING_PATH="$(pwd)"
 SCRIPT=$(readlink -f "$0")
 SCRIPT_PATH=$(dirname "$SCRIPT")
 
-# Get options from command
+# Options
 license=
 name=
 project_name=
@@ -75,14 +75,11 @@ else
   git init
 fi
 }
-initialize_git_repo
-
-
-# Create LICENSE
-touch LICENSE
-LICENSE="$WORKING_PATH/LICENSE"
 
 create_license() {
+	touch LICENSE
+	LICENSE="$WORKING_PATH/LICENSE"
+
 	if [ "$license" ]; then
 	  license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
 	  if [ ! -e "$license_reference_file" ]; then
@@ -146,7 +143,11 @@ create_gitignore() {
 	info ".gitignore added"
 }
 
-create_license
-create_gitignore
+git_init_plus() {
+	initialize_git_repo
+	create_license
+	create_gitignore
+	info "Success! New project initialized"
+}
 
-info "Success! New project initialized"
+git_init_plus
