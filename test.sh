@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
-set -x
+set -x -e
 
 SCRIPT_PATH="."
 
+rm -rf /opt/git-init-plus/ || echo "no /opt/git-init-plus"
+rm /opt/git-init-plus-master.zip || echo "no /opt/git-init-plus-maste.zip"
 
 shunit2 "$SCRIPT_PATH/test/license.test.sh"
 shunit2 "$SCRIPT_PATH/test/readme.test.sh"
