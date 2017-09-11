@@ -7,8 +7,10 @@ CURRENT_YEAR=$(date +"%Y")
 shopt -s expand_aliases
 
 [[ $(uname) == 'Darwin' ]] && {
-	which greadlink gsed > /dev/null && {
-      unalias readlink sed
+	# shellcheck disable=SC2015
+	which greadlink gsed >/dev/null && {
+		[[ $(type -t readlink) == "alias" ]] && unalias readlink
+		[[ $(type -t sed) == "alias" ]] && unalias sed
 		alias readlink=greadlink sed=gsed
 	} || {
 		echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'

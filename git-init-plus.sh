@@ -5,8 +5,10 @@ shopt -s expand_aliases
 
 function patch_readlink() {
 	[[ $(uname) == 'Darwin' ]] && {
+		# shellcheck disable=SC2015
 		which greadlink gsed >/dev/null && {
-			unalias readlink sed
+			[[ $(type -t readlink) == "alias" ]] && unalias readlink
+			[[ $(type -t sed) == "alias" ]] && unalias sed
 			alias readlink=greadlink sed=gsed
 		} || {
 			echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
@@ -149,3 +151,5 @@ git_init_plus() {
 	create_gitignore
 	info "Success! New project initialized"
 }
+
+git_init_plus
