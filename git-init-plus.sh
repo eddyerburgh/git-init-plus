@@ -59,6 +59,7 @@ do
   esac
 done
 
+initialize_git_repo() {
 # Initialize empty git repo
 if [ -d "$WORKING_PATH/.git" ]; then
   read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
@@ -73,6 +74,8 @@ if [ -d "$WORKING_PATH/.git" ]; then
 else
   git init
 fi
+}
+initialize_git_repo
 
 # Create LICENSE
 touch LICENSE
