@@ -77,63 +77,67 @@ fi
 }
 initialize_git_repo
 
+
 # Create LICENSE
 touch LICENSE
 LICENSE="$WORKING_PATH/LICENSE"
 
-# Add License content
-if [ "$license" ]; then
-  license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
-  if [ ! -e "$license_reference_file" ]; then
-    licenses_list=""
-    for file in $SCRIPT_PATH/resources/licenses/*.txt; do
-      if [ ! "$licenses_list" ]; then
-        licenses_list=$(basename "${file%.*}")
-      else
-        licenses_list="$licenses_list, $(basename "${file%.*}")"
-      fi
-    done
-    fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
-  fi
-  cat "$license_reference_file" >> "$LICENSE"
-  info "Created $license license"
+create_license() {
+	if [ "$license" ]; then
+	  license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
+	  if [ ! -e "$license_reference_file" ]; then
+	    licenses_list=""
+	    for file in $SCRIPT_PATH/resources/licenses/*.txt; do
+	      if [ ! "$licenses_list" ]; then
+	        licenses_list=$(basename "${file%.*}")
+	      else
+	        licenses_list="$licenses_list, $(basename "${file%.*}")"
+	      fi
+	    done
+	    fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
+	  fi
+	  cat "$license_reference_file" >> "$LICENSE"
+	  info "Created $license license"
 
-else
-  cat "$SCRIPT_PATH/resources/licenses/MIT.txt" >> "$LICENSE"
-  info "No license specified, defaulting to MIT (pass license with -l arg)"
-fi
+	else
+	  cat "$SCRIPT_PATH/resources/licenses/MIT.txt" >> "$LICENSE"
+	  info "No license specified, defaulting to MIT (pass license with -l arg)"
+	fi
 
-# Add name to license
-if [ "$name" ]; then
-  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
-else
-  while [[ $name == '' ]]
-  do
-    read -r -p "What is the name(s) of the copyright holder(s):" name
-  done
-  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
-  info "Name added to license"
-fi
+	# Add name to license
+	if [ "$name" ]; then
+	  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+	else
+	  while [[ $name == '' ]]
+	  do
+	    read -r -p "What is the name(s) of the copyright holder(s):" name
+	  done
+	  sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+	  info "Name added to license"
+	fi
 
-# Add date to license
-sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
+	# Add date to license
+	sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
-# Create README.md
-README="$WORKING_PATH/README.md"
-[ -e "$README" ] && rm "$README"
-touch "$README"
+	# Create README.md
+	README="$WORKING_PATH/README.md"
+	[ -e "$README" ] && rm "$README"
+	touch "$README"
 
-# Add project name as title of README
-if [ "$project_name" ]; then
-  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
-else
-  while [[ $project_name == '' ]]
-  do
-    read -r -p "What is the name your project (added as title to README):" project_name
-  done
-  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
-  info "Title added to README"
-fi
+	# Add project name as title of README
+	if [ "$project_name" ]; then
+	  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
+	else
+	  while [[ $project_name == '' ]]
+	  do
+	    read -r -p "What is the name your project (added as title to README):" project_name
+	  done
+	  echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" > "$README"
+	  info "Title added to README"
+	fi
+
+}
+create_license
 
 # Copy .gitignore
 GITIGNORE="$WORKING_PATH/.gitignore"
