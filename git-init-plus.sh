@@ -18,20 +18,30 @@ function gip_patch_readlink() {
 
 gip_patch_readlink
 
-#/ gip_usage: git-init-plus [options]
-#/ Description: Init a git project, LICENSE, README and .gitignore
-#/ Examples: git-init-plus -l MIT -n Edd -p project-name
-#/ Options:
-#/   -l name of license to create (defaults to MIT)
-#/   --license name of license to create (defaults to MIT)
-#/   -n name(s) of copyright holder(s) to be added to LICENSE
-#/   --name name(s) of copyright holder(s) to be added to LICENSE
-#/   -p project name to be added as title to README.md
-#/   --project-name project name to be added as title to README.md
-#/   -h: Display this help message
-#/   --help: Display this help message
+gip_echo() {
+  command printf %s\\n "$*" 2>/dev/null || {
+    nvm_echo() {
+      # shellcheck disable=SC1001
+      \printf %s\\n "$*" # on zsh, `command printf` sometimes fails
+    }
+    nvm_echo "$@"
+  }
+}
+
 gip_usage() {
-	grep '^#/' "$0" | cut -c4-
+	gip_echo "gip_usage: git-init-plus [options]"
+	gip_echo "Description: Init a git project, LICENSE, README and .gitignore"
+	gip_echo "Examples: git-init-plus -l MIT -n Edd -p project-name"
+	gip_echo "Options:"
+	gip_echo "  -l name of license to create (defaults to MIT)"
+	gip_echo "  --license name of license to create (defaults to MIT)"
+	gip_echo "gip_usage: git-init-plus [options]"
+	gip_echo "-n name(s) of copyright holder(s) to be added to LICENSE"
+  gip_echo "--name name(s) of copyright holder(s) to be added to LICENSE"
+  gip_echo "-p project name to be added as title to README.md"
+  gip_echo "--project-name project name to be added as title to README.md"
+  gip_echo "-h: Display this help message"
+  gip_echo "--help: Display this help message"
 	exit 0
 }
 
