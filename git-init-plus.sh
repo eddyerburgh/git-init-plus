@@ -29,19 +29,22 @@ gip_echo() {
 }
 
 gip_usage() {
+	gip_echo ""
 	gip_echo "gip_usage: git-init-plus [options]"
+	gip_echo ""
 	gip_echo "Description: Init a git project, LICENSE, README and .gitignore"
+	gip_echo ""
 	gip_echo "Examples: git-init-plus -l MIT -n Edd -p project-name"
+	gip_echo ""
 	gip_echo "Options:"
 	gip_echo "  -l name of license to create (defaults to MIT)"
 	gip_echo "  --license name of license to create (defaults to MIT)"
-	gip_echo "gip_usage: git-init-plus [options]"
-	gip_echo "-n name(s) of copyright holder(s) to be added to LICENSE"
-  gip_echo "--name name(s) of copyright holder(s) to be added to LICENSE"
-  gip_echo "-p project name to be added as title to README.md"
-  gip_echo "--project-name project name to be added as title to README.md"
-  gip_echo "-h: Display this help message"
-  gip_echo "--help: Display this help message"
+	gip_echo "  -n name(s) of copyright holder(s) to be added to LICENSE"
+  gip_echo "  --name name(s) of copyright holder(s) to be added to LICENSE"
+  gip_echo "  -p project name to be added as title to README.md"
+  gip_echo "  --project-name project name to be added as title to README.md"
+  gip_echo "  -h: Display this help message"
+  gip_echo "  --help: Display this help message"
 	exit 0
 }
 
