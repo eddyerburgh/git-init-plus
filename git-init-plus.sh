@@ -69,7 +69,7 @@ function gip_parse_options() {
 			project_name="$2"
 			shift
 			;;
-		-n | --searchpath)
+		-n | --name)
 			name="$2"
 			shift
 			;;

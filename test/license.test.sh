@@ -109,6 +109,16 @@ test_name_added_to_license_when_option_passed()
   assertTrue "$contains_name"
 }
 
+test_name_added_to_license_when_long_option_passed()
+{
+  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+ "$ROOT_PATH/git-init-plus.sh" --name "Edd Yerburgh" -p project
+  contains_name=false
+  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true;fi
+
+  assertTrue "$contains_name"
+}
+
 test_prompt_for_name_and_added_to_license()
 {
   mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
