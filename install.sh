@@ -52,7 +52,7 @@ if [ -e "/opt/git-init-plus" ]; then
   esac
 fi
 
-cd /opt
+cd /opt || exit
 unzip git-init-plus-master.zip
 
 mv git-init-plus-master git-init-plus
