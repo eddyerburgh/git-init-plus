@@ -8,6 +8,7 @@ info()    { echo "$@" | tee -a "$LOG_FILE" >&2 ; }
 fatal()   { echo "$@" | tee -a "$LOG_FILE" >&2 ; exit 1 ; }
 
 command -v git >/dev/null 2>&1 || { fatal "The install script requires git but it's not installed.  Aborting."; }
+command -v curl >/dev/null 2>&1 || { fatal "The install script requires curl but it's not installed.  Aborting."; }
 
 curl -LOk https://github.com/eddyerburgh/git-init-plus/archive/master.zip
 
