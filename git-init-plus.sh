@@ -3,7 +3,7 @@ set -euo pipefail
 
 shopt -s expand_aliases
 
-function patch_readlink() {
+function gip_patch_readlink() {
 	[[ $(uname) == 'Darwin' ]] && {
 		# shellcheck disable=SC2015
 		which greadlink gsed >/dev/null && {
@@ -17,9 +17,9 @@ function patch_readlink() {
 	}
 }
 
-patch_readlink
+gip_patch_readlink
 
-#/ Usage: git-init-plus [options]
+#/ gip_usage: git-init-plus [options]
 #/ Description: Init a git project, LICENSE, README and .gitignore
 #/ Examples: git-init-plus -l MIT -n Edd -p project-name
 #/ Options:
@@ -28,25 +28,25 @@ patch_readlink
 #/   -p project name to be added as title to README.md
 #/   -h: Display this help message
 #/   --help: Display this help message
-usage() {
+gip_usage() {
 	grep '^#/' "$0" | cut -c4-
 	exit 0
 }
-expr "$*" : ".*--help" >/dev/null && usage
-expr "$*" : ".*-h" >/dev/null && usage
+expr "$*" : ".*--help" >/dev/null && gip_usage
+expr "$*" : ".*-h" >/dev/null && gip_usage
 
-create_logger() {
+gip_create_logger() {
 	# Logger
 	readonly LOG_FILE="/tmp/git-init-plus.log"
-	info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
-	fatal() {
+	gip_info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
+	gip_fatal() {
 		echo "$@" | tee -a "$LOG_FILE" >&2
 		exit 1
 	}
 }
 
-check_git_is_installed() {
-	command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
+gip_check_git_is_installed() {
+	command -v git >/dev/null 2>&1 || { gip_fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 }
 
 # Path variables
@@ -58,6 +58,7 @@ SCRIPT_PATH=$(dirname "$SCRIPT")
 license=
 name=
 project_name=
+
 while getopts l:n:p: option; do
 	case "${option}" in
 
@@ -67,7 +68,7 @@ while getopts l:n:p: option; do
 	esac
 done
 
-initialize_git_repo() {
+gip_initialize_git_repo() {
 	# Initialize empty git repo
 	if [ -d "$WORKING_PATH/.git" ]; then
 		read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
@@ -76,7 +77,7 @@ initialize_git_repo() {
 			git init
 			;;
 		*)
-			fatal "Program exiting"
+			gip_fatal "Program exiting"
 			;;
 		esac
 	else
@@ -84,7 +85,7 @@ initialize_git_repo() {
 	fi
 }
 
-create_license() {
+gip_create_license() {
 	touch LICENSE
 	LICENSE="$WORKING_PATH/LICENSE"
 
@@ -99,14 +100,14 @@ create_license() {
 					licenses_list="$licenses_list, $(basename "${file%.*}")"
 				fi
 			done
-			fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
+			gip_fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
 		fi
 		cat "$license_reference_file" >>"$LICENSE"
-		info "Created $license license"
+		gip_info "Created $license license"
 
 	else
 		cat "$SCRIPT_PATH/resources/licenses/MIT.txt" >>"$LICENSE"
-		info "No license specified, defaulting to MIT (pass license with -l arg)"
+		gip_info "No license specified, defaulting to MIT (pass license with -l arg)"
 	fi
 
 	# Add name to license
@@ -117,7 +118,7 @@ create_license() {
 			read -r -p "What is the name(s) of the copyright holder(s):" name
 		done
 		sed -i "s/<copyright holders>/$name/g" "$LICENSE"
-		info "Name added to license"
+		gip_info "Name added to license"
 	fi
 
 	# Add date to license
@@ -136,26 +137,26 @@ create_license() {
 			read -r -p "What is the name your project (added as title to README):" project_name
 		done
 		echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" >"$README"
-		info "Title added to README"
+		gip_info "Title added to README"
 	fi
 
 }
 
-create_gitignore() {
+gip_create_gitignore() {
 	# Copy .gitignore
 	GITIGNORE="$WORKING_PATH/.gitignore"
 	[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
 	cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
-	info ".gitignore added"
+	gip_info ".gitignore added"
 }
 
 git_init_plus() {
-	create_logger
-	check_git_is_installed
-	initialize_git_repo
-	create_license
-	create_gitignore
-	info "Success! New project initialized"
+	gip_create_logger
+	gip_check_git_is_installed
+	gip_initialize_git_repo
+	gip_create_license
+	gip_create_gitignore
+	gip_info "Success! New project initialized"
 }
 
 git_init_plus
