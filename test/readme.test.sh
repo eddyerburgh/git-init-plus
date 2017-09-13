@@ -32,6 +32,15 @@ test_README_title_is_added_in_lowercase_when_passed_as_options()
   assertTrue "$contains_name"
 }
 
+test_README_title_is_added_in_lowercase_when_passed_as_long_options()
+{
+ "$ROOT_PATH/git-init-plus.sh" -n Edd --project-name ProjecT-name
+  contains_name=false
+  if grep -q "# project-name" ./README.md; then contains_name=true;fi
+
+  assertTrue "$contains_name"
+}
+
 test_user_is_prompted_for_README_title_if_not_passed_as_option()
 {
   printf "PROJECt-name\n" | "$ROOT_PATH/git-init-plus.sh" -n Edd

@@ -65,7 +65,7 @@ function gip_parse_options() {
 		key="$1"
 
 		case $key in
-		-p | --extension)
+		-p | --project-name)
 			project_name="$2"
 			shift
 			;;
