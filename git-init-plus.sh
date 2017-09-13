@@ -23,8 +23,11 @@ gip_patch_readlink
 #/ Examples: git-init-plus -l MIT -n Edd -p project-name
 #/ Options:
 #/   -l name of license to create (defaults to MIT)
+#/   --license name of license to create (defaults to MIT)
 #/   -n name(s) of copyright holder(s) to be added to LICENSE
+#/   --name name(s) of copyright holder(s) to be added to LICENSE
 #/   -p project name to be added as title to README.md
+#/   --project-name project name to be added as title to README.md
 #/   -h: Display this help message
 #/   --help: Display this help message
 gip_usage() {
