@@ -73,7 +73,7 @@ function gip_parse_options() {
 			name="$2"
 			shift
 			;;
-		-l)
+		-l|--license)
 			license="$2"
 			shift
 			;;

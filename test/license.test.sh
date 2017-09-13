@@ -49,6 +49,15 @@ test_mit_license_created_when_MIT_passed_as_option()
   assertEquals "$mit_content" "$license_content"
 }
 
+test_mit_license_created_when_MIT_passed_as_long_option()
+{
+
+  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
+ "$ROOT_PATH/git-init-plus.sh" --license MIT -n Edd -p project
+  license_content=$(< "./LICENSE")
+  assertEquals "$mit_content" "$license_content"
+}
+
 test_isc_license_created_when_ISC_passed_as_option()
 {
   isc_content=$( cat < "$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
