@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
-set -uo pipefail
+set -euo pipefail
 
-WORKING_PATH=
-SCRIPT=
-SCRIPT_PATH=
-
-license=
-name=
-project_name=
-
-function gip_patch_readlink() {
+gip_patch_readlink() {
 	shopt -s expand_aliases
 	[[ $(uname) == 'Darwin' ]] && {
 		# shellcheck disable=SC2015
@@ -27,36 +19,35 @@ function gip_patch_readlink() {
 gip_patch_readlink
 
 gip_echo() {
-  command printf %s\\n "$*" 2>/dev/null || {
-    nvm_echo() {
-      # shellcheck disable=SC1001
-      \printf %s\\n "$*" # on zsh, `command printf` sometimes fails
-    }
-    nvm_echo "$@"
-  }
+	command printf %s\\n "$*" 2>/dev/null || {
+		nvm_echo() {
+			# shellcheck disable=SC1001
+			\printf %s\\n "$*" # on zsh, `command printf` sometimes fails
+		}
+		nvm_echo "$@"
+	}
 }
 
 gip_usage() {
-	gip_echo ""
 	gip_echo "gip_usage: git-init-plus [options]"
 	gip_echo ""
 	gip_echo "Description: Init a git project, LICENSE, README and .gitignore"
-	gip_echo ""
 	gip_echo "Examples: git-init-plus -l MIT -n Edd -p project-name"
-	gip_echo ""
+
 	gip_echo "Options:"
 	gip_echo "  -l name of license to create (defaults to MIT)"
 	gip_echo "  --license name of license to create (defaults to MIT)"
 	gip_echo "  -n name(s) of copyright holder(s) to be added to LICENSE"
-  gip_echo "  --name name(s) of copyright holder(s) to be added to LICENSE"
-  gip_echo "  -p project name to be added as title to README.md"
-  gip_echo "  --project-name project name to be added as title to README.md"
-  gip_echo "  -h: Display this help message"
-  gip_echo "  --help: Display this help message"
+	gip_echo "  --name name(s) of copyright holder(s) to be added to LICENSE"
+	gip_echo "  -p project name to be added as title to README.md"
+	gip_echo "  --project-name project name to be added as title to README.md"
+	gip_echo "  -h: Display this help message"
+	gip_echo "  --help: Display this help message"
 	exit 0
 }
 
 gip_create_logger() {
+	# Logger
 	readonly LOG_FILE="/tmp/git-init-plus.log"
 	gip_info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
 	gip_fatal() {
@@ -69,13 +60,21 @@ gip_check_git_is_installed() {
 	command -v git >/dev/null 2>&1 || { gip_fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 }
 
+WORKING_PATH=
+SCRIPT=
+SCRIPT_PATH=
+
+license=
+name=
+project_name=
+
 gip_create_path_variables() {
 	WORKING_PATH="$(pwd)"
 	SCRIPT=$(readlink -f "$0")
 	SCRIPT_PATH=$(dirname "$SCRIPT")
 }
 
-gip_parse_options() {
+function gip_parse_options() {
 	while [[ $# -gt 0 ]]; do
 		key="$1"
 
@@ -88,11 +87,11 @@ gip_parse_options() {
 			name="$2"
 			shift
 			;;
-		-l|--license)
+		-l | --license)
 			license="$2"
 			shift
 			;;
-		-h|--help)
+		-h | --help)
 			gip_usage
 			exit
 			;;
@@ -106,6 +105,7 @@ gip_parse_options() {
 }
 
 gip_initialize_git_repo() {
+	# Initialize empty git repo
 	if [ -d "$WORKING_PATH/.git" ]; then
 		read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
 		case "$response" in
@@ -123,7 +123,7 @@ gip_initialize_git_repo() {
 
 gip_create_license() {
 	touch LICENSE
-	local LICENSE="$WORKING_PATH/LICENSE"
+	LICENSE="$WORKING_PATH/LICENSE"
 
 	if [ "$license" ]; then
 		license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
@@ -161,7 +161,7 @@ gip_create_license() {
 	sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 	# Create README.md
-	local README="$WORKING_PATH/README.md"
+	README="$WORKING_PATH/README.md"
 	[ -e "$README" ] && rm "$README"
 	touch "$README"
 
@@ -179,7 +179,7 @@ gip_create_license() {
 
 gip_create_gitignore() {
 	# Copy .gitignore
-	local GITIGNORE="$WORKING_PATH/.gitignore"
+	GITIGNORE="$WORKING_PATH/.gitignore"
 	[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
 	cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
 	gip_info ".gitignore added"
