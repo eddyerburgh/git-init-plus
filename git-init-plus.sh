@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
 function gip_patch_readlink() {
 	shopt -s expand_aliases
@@ -49,7 +49,6 @@ gip_usage() {
 }
 
 gip_create_logger() {
-	# Logger
 	readonly LOG_FILE="/tmp/git-init-plus.log"
 	gip_info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
 	gip_fatal() {
