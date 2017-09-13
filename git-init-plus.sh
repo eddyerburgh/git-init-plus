@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -uo pipefail
 
+WORKING_PATH=
+SCRIPT=
+SCRIPT_PATH=
+
+license=
+name=
+project_name=
+
 function gip_patch_readlink() {
 	shopt -s expand_aliases
 	[[ $(uname) == 'Darwin' ]] && {
@@ -61,21 +69,13 @@ gip_check_git_is_installed() {
 	command -v git >/dev/null 2>&1 || { gip_fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 }
 
-WORKING_PATH=
-SCRIPT=
-SCRIPT_PATH=
-
-license=
-name=
-project_name=
-
 gip_create_path_variables() {
 	WORKING_PATH="$(pwd)"
 	SCRIPT=$(readlink -f "$0")
 	SCRIPT_PATH=$(dirname "$SCRIPT")
 }
 
-function gip_parse_options() {
+gip_parse_options() {
 	while [[ $# -gt 0 ]]; do
 		key="$1"
 
@@ -106,7 +106,6 @@ function gip_parse_options() {
 }
 
 gip_initialize_git_repo() {
-	# Initialize empty git repo
 	if [ -d "$WORKING_PATH/.git" ]; then
 		read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
 		case "$response" in
@@ -124,7 +123,7 @@ gip_initialize_git_repo() {
 
 gip_create_license() {
 	touch LICENSE
-	LICENSE="$WORKING_PATH/LICENSE"
+	local LICENSE="$WORKING_PATH/LICENSE"
 
 	if [ "$license" ]; then
 		license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
@@ -162,7 +161,7 @@ gip_create_license() {
 	sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
 
 	# Create README.md
-	README="$WORKING_PATH/README.md"
+	local README="$WORKING_PATH/README.md"
 	[ -e "$README" ] && rm "$README"
 	touch "$README"
 
@@ -180,7 +179,7 @@ gip_create_license() {
 
 gip_create_gitignore() {
 	# Copy .gitignore
-	GITIGNORE="$WORKING_PATH/.gitignore"
+	local GITIGNORE="$WORKING_PATH/.gitignore"
 	[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
 	cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
 	gip_info ".gitignore added"
