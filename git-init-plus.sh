@@ -35,15 +35,19 @@ usage() {
 expr "$*" : ".*--help" >/dev/null && usage
 expr "$*" : ".*-h" >/dev/null && usage
 
-# Logger
-readonly LOG_FILE="/tmp/git-init-plus.log"
-info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
-fatal() {
-	echo "$@" | tee -a "$LOG_FILE" >&2
-	exit 1
+create_logger() {
+	# Logger
+	readonly LOG_FILE="/tmp/git-init-plus.log"
+	info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
+	fatal() {
+		echo "$@" | tee -a "$LOG_FILE" >&2
+		exit 1
+	}
 }
 
-command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
+check_git_is_installed() {
+	command -v git >/dev/null 2>&1 || { fatal "git-init-plus requires git but it's not installed.  Aborting."; }
+}
 
 # Path variables
 WORKING_PATH="$(pwd)"
@@ -146,6 +150,8 @@ create_gitignore() {
 }
 
 git_init_plus() {
+	create_logger
+	check_git_is_installed
 	initialize_git_repo
 	create_license
 	create_gitignore
