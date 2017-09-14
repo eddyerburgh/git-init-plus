@@ -13,9 +13,9 @@ fatal() {
 }
 
 gip_create_temp_dir() {
-  (umask 077 && mkdir "${TMP_DIR}") || {
-  	fatal "Could not create temporary directory! Exiting."
-  }
+	(umask 077 && mkdir "${TMP_DIR}") || {
+		fatal "Could not create temporary directory! Exiting."
+	}
 }
 
 gip_check_dependencies_installed() {
@@ -47,17 +47,23 @@ gip_trap_cleanup() {
 	rm -rf "${TMP_DIR}"
 }
 
+gip_log_success() {
+	info ""
+	info "Success! ${SCRIPT_NAME} is installed in /usr/local/bin"
+	info ""
+	info "Enter ${SCRIPT_NAME} to start a new git project"
+	info ""
+	info "If ${SCRIPT_NAME} is not recognised as a command, add /usr/local/bin to your PATH"
+}
+
 gip_install() {
 	gip_check_dependencies_installed
-  gip_create_temp_dir
+	gip_create_temp_dir
 	gip_download_zip
 	gip_unzip
 	gip_move_to_opt
 	gip_create_sym_link
-	info "Success! ${SCRIPT_NAME} is installed in /usr/local/bin
-  Run ${SCRIPT_NAME} to start a new git project
-  If ${SCRIPT_NAME} is no recognised as a command, add /usr/local/bin to your PATH
-  "
+	gip_log_success
 }
 
 gip_install
