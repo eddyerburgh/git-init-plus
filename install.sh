@@ -2,10 +2,11 @@
 set -uo pipefail
 
 IFS=$'\n\t'
-SCRIPT_NAME="git-init-plus"
-TMP_DIR="/tmp/${SCRIPT_NAME}.$RANDOM.$RANDOM.$RANDOM.$$"
 
+readonly SCRIPT_NAME="git-init-plus"
+readonly TMP_DIR="/tmp/${SCRIPT_NAME}.$RANDOM.$RANDOM.$RANDOM.$$"
 readonly LOG_FILE="/tmp/$(basename "$0").log"
+
 info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
 fatal() {
 	echo "$@" | tee -a "$LOG_FILE" >&2
@@ -38,9 +39,9 @@ gip_move_to_opt() {
 }
 
 gip_create_sym_link() {
-	local ROOT_DIR="/opt/${SCRIPT_NAME}"
-	chmod +x "$ROOT_DIR/${SCRIPT_NAME}.sh"
-	ln -sf "$ROOT_DIR/${SCRIPT_NAME}.sh" "/usr/local/bin/${SCRIPT_NAME}"
+	local root_dir="/opt/${SCRIPT_NAME}"
+	chmod +x "$root_dir/${SCRIPT_NAME}.sh"
+	ln -sf "$root_dir/${SCRIPT_NAME}.sh" "/usr/local/bin/${SCRIPT_NAME}"
 }
 
 gip_trap_cleanup() {

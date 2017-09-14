@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-WORKING_PATH=
-SCRIPT=
-SCRIPT_PATH=
-
+working_path=
+script=
+script_path=
 license=
 name=
 project_name=
@@ -68,9 +67,9 @@ gip_check_git_is_installed() {
 }
 
 gip_create_path_variables() {
-	WORKING_PATH="$(pwd)"
-	SCRIPT=$(readlink -f "$0")
-	SCRIPT_PATH=$(dirname "$SCRIPT")
+	working_path="$(pwd)"
+	script=$(readlink -f "$0")
+	script_path=$(dirname "$script")
 }
 
 gip_parse_options() {
@@ -105,7 +104,7 @@ gip_parse_options() {
 
 gip_initialize_git_repo() {
 	# Initialize empty git repo
-	if [ -d "$WORKING_PATH/.git" ]; then
+	if [ -d "$working_path/.git" ]; then
 		read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
 		case "$response" in
 		[yY][eE][sS] | [yY])
@@ -122,13 +121,13 @@ gip_initialize_git_repo() {
 
 gip_create_license() {
 	touch LICENSE
-	LICENSE="$WORKING_PATH/LICENSE"
+	local license_file="$working_path/LICENSE"
 
 	if [ "$license" ]; then
-		license_reference_file="$SCRIPT_PATH/resources/licenses/$license.txt"
+		license_reference_file="$script_path/resources/licenses/$license.txt"
 		if [ ! -e "$license_reference_file" ]; then
 			licenses_list=""
-			for file in $SCRIPT_PATH/resources/licenses/*.txt; do
+			for file in $script_path/resources/licenses/*.txt; do
 				if [ ! "$licenses_list" ]; then
 					licenses_list=$(basename "${file%.*}")
 				else
@@ -137,50 +136,50 @@ gip_create_license() {
 			done
 			gip_fatal "Invalid license passed to function. Available licenses are ${licenses_list}"
 		fi
-		cat "$license_reference_file" >>"$LICENSE"
+		cat "$license_reference_file" >>"$license_file"
 		gip_info "Created $license license"
 
 	else
-		cat "$SCRIPT_PATH/resources/licenses/MIT.txt" >>"$LICENSE"
+		cat "$script_path/resources/licenses/MIT.txt" >>"$license_file"
 		gip_info "No license specified, defaulting to MIT (pass license with -l arg)"
 	fi
 
 	# Add name to license
 	if [ "$name" ]; then
-		sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+		sed -i "s/<copyright holders>/$name/g" "$license_file"
 	else
 		while [[ $name == '' ]]; do
 			read -r -p "What is the name(s) of the copyright holder(s):" name
 		done
-		sed -i "s/<copyright holders>/$name/g" "$LICENSE"
+		sed -i "s/<copyright holders>/$name/g" "$license_file"
 		gip_info "Name added to license"
 	fi
 
 	# Add date to license
-	sed -i "s/<year>/$(date +"%Y")/g" "$LICENSE"
+	sed -i "s/<year>/$(date +"%Y")/g" "$license_file"
 
 	# Create README.md
-	README="$WORKING_PATH/README.md"
-	[ -e "$README" ] && rm "$README"
-	touch "$README"
+	local readme="$working_path/README.md"
+	[ -e "$readme" ] && rm "$readme"
+	touch "$readme"
 
 	# Add project name as title of README
 	if [ "$project_name" ]; then
-		echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" >"$README"
+		echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" >"$readme"
 	else
 		while [[ $project_name == '' ]]; do
 			read -r -p "What is the name your project (added as title to README):" project_name
 		done
-		echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" >"$README"
+		echo "# $(tr '[:upper:]' '[:lower:]' <<<"$project_name")" >"$readme"
 		gip_info "Title added to README"
 	fi
 }
 
 gip_create_gitignore() {
 	# Copy .gitignore
-	GITIGNORE="$WORKING_PATH/.gitignore"
+	GITIGNORE="$working_path/.gitignore"
 	[ -e "$GITIGNORE" ] && rm "$GITIGNORE"
-	cp "$SCRIPT_PATH/resources/.gitignore" "$GITIGNORE"
+	cp "$script_path/resources/.gitignore" "$GITIGNORE"
 	gip_info ".gitignore added"
 }
 
