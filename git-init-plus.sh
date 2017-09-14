@@ -47,7 +47,6 @@ gip_usage() {
 }
 
 gip_create_logger() {
-	# Logger
 	readonly LOG_FILE="/tmp/git-init-plus.log"
 	gip_info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
 	gip_fatal() {
@@ -74,7 +73,7 @@ gip_create_path_variables() {
 	SCRIPT_PATH=$(dirname "$SCRIPT")
 }
 
-function gip_parse_options() {
+gip_parse_options() {
 	while [[ $# -gt 0 ]]; do
 		key="$1"
 
