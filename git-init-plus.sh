@@ -1,6 +1,14 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+WORKING_PATH=
+SCRIPT=
+SCRIPT_PATH=
+
+license=
+name=
+project_name=
+
 gip_patch_readlink() {
 	shopt -s expand_aliases
 	[[ $(uname) == 'Darwin' ]] && {
@@ -58,14 +66,6 @@ gip_create_logger() {
 gip_check_git_is_installed() {
 	command -v git >/dev/null 2>&1 || { gip_fatal "git-init-plus requires git but it's not installed.  Aborting."; }
 }
-
-WORKING_PATH=
-SCRIPT=
-SCRIPT_PATH=
-
-license=
-name=
-project_name=
 
 gip_create_path_variables() {
 	WORKING_PATH="$(pwd)"
