@@ -76,13 +76,16 @@ gip_create_sym_link() {
 	ln -sf "$ROOT_DIR/git-init-plus.sh" /usr/local/bin/git-init-plus
 }
 
-gip_check_dependencies_installed
-gip_download_zip
-gip_remove_existing_files
-gip_unzip
-gip_create_sym_link
+gip_install() {
+	gip_check_dependencies_installed
+	gip_download_zip
+	gip_remove_existing_files
+	gip_unzip
+	gip_create_sym_link
+	info "Success! git-init-plus is installed in /usr/local/bin
+  Run git-init-plus to start a new git project
+  If git-init-plus is no recognised as a command, add /usr/local/bin to your PATH
+  "
+}
 
-info "Success! git-init-plus is installed in /usr/local/bin
-Run git-init-plus to start a new git project
-If git-init-plus is no recognised as a command, add /usr/local/bin to your PATH
-"
+gip_install
