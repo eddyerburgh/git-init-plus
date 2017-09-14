@@ -157,8 +157,9 @@ gip_create_license() {
 
 	# Add date to license
 	sed -i "s/<year>/$(date +"%Y")/g" "$license_file"
+}
 
-	# Create README.md
+gip_create_readme() {
 	local readme="$working_path/README.md"
 	[ -e "$readme" ] && rm "$readme"
 	touch "$readme"
@@ -190,6 +191,7 @@ git_init_plus() {
 	gip_check_git_is_installed
 	gip_initialize_git_repo
 	gip_create_license
+	gip_create_readme
 	gip_create_gitignore
 	gip_info "Success! New project initialized"
 }
