@@ -4,15 +4,18 @@ set -uo pipefail
 IFS=$'\n\t'
 SCRIPT_NAME="git-init-plus"
 TMP_DIR="/tmp/${SCRIPT_NAME}.$RANDOM.$RANDOM.$RANDOM.$$"
-(umask 077 && mkdir "${TMP_DIR}") || {
-	die "Could not create temporary directory! Exiting."
-}
 
 readonly LOG_FILE="/tmp/$(basename "$0").log"
 info() { echo "$@" | tee -a "$LOG_FILE" >&2; }
 fatal() {
 	echo "$@" | tee -a "$LOG_FILE" >&2
 	exit 1
+}
+
+gip_create_temp_dir() {
+  (umask 077 && mkdir "${TMP_DIR}") || {
+  	fatal "Could not create temporary directory! Exiting."
+  }
 }
 
 gip_check_dependencies_installed() {
@@ -46,6 +49,7 @@ gip_trap_cleanup() {
 
 gip_install() {
 	gip_check_dependencies_installed
+  gip_create_temp_dir
 	gip_download_zip
 	gip_unzip
 	gip_move_to_opt
