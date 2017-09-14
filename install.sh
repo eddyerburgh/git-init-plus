@@ -54,6 +54,7 @@ gip_log_success() {
 	info "Enter ${SCRIPT_NAME} to start a new git project"
 	info ""
 	info "If ${SCRIPT_NAME} is not recognised as a command, add /usr/local/bin to your PATH"
+  info ""
 }
 
 gip_install() {
