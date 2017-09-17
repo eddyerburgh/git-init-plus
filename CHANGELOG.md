@@ -1,3 +1,16 @@
-1.0.0
-=================
-  * Initial release :rocket:
+<a name="v1.1.0"></a>
+# [v1.1.0](/compare/1.0.0...1.1.0) (2017-09-17)
+
+
+### Bug Fixes
+
+* check curl is installed in install script: efa1674
+
+
+### Features
+
+* **name:** add support for long option name ebd1b37
+* **readme:** add support for long option project name 25b5553
+
+<a name="v1.0.0"></a>
+* **initial release:** :rocket:
