@@ -1,0 +1,30 @@
+{
+  "name": "git-init-plus",
+  "version": "1.0.0",
+  "description": "⚡️ turbo charged git init",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "release:note": "node gen-release-note",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eddyerburgh/git-init-plus.git"
+  },
+  "keywords": [
+    "git",
+    "git-init"
+  ],
+  "author": "Edd Yerburgh",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/eddyerburgh/git-init-plus/issues"
+  },
+  "homepage": "https://github.com/eddyerburgh/git-init-plus#readme",
+  "devDependencies": {
+    "conventional-changelog": "^1.1.5"
+  }
+}
