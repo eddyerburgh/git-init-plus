@@ -25,16 +25,19 @@ gip_trap_cleanup() {
 }
 
 gip_release() {
-  npm run release:note
+  npm run release:note "$version"
   cat RELEASE_NOTE.md > "${TMP_DIR}/CHANGELOG.md"
+  echo "" >> "${TMP_DIR}/CHANGELOG.md"
   cat CHANGELOG.md >> "${TMP_DIR}/CHANGELOG.md"
-  cat "${TMP_DIR}/CHANGELOG" > CHANGELOG.md
+  cat "${TMP_DIR}/CHANGELOG.md" > CHANGELOG.md
 
   git add CHANGELOG.md
   git commit -m "docs: update CHANGELOG"
 
-  git push origin "refs/tags/v${version}"
+  git tag "v{$version}"
+  git push origin "refs/tags/v{$version}"
   git push origin master
+  git push origin HEAD
 }
 
 gip_confirm_version() {
@@ -47,6 +50,7 @@ gip_confirm_version() {
 }
 
 gip_get_version "$@"
+gip_create_temp_dir
 gip_confirm_version
 
 trap gip_trap_cleanup EXIT INT TERM
