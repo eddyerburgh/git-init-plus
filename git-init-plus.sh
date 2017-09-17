@@ -103,7 +103,6 @@ gip_parse_options() {
 }
 
 gip_initialize_git_repo() {
-  # Initialize empty git repo
   if [ -d "$working_path/.git" ]; then
     read -r -p ".git already exists in directory, do you want to reinitialize? [y/N] " response
     case "$response" in
@@ -120,8 +119,9 @@ gip_initialize_git_repo() {
 }
 
 gip_create_license() {
-  touch LICENSE
   local license_file="$working_path/LICENSE"
+
+  touch "$license_file"
 
   if [ "$license" ]; then
     license_reference_file="$script_path/resources/licenses/$license.txt"
@@ -161,6 +161,7 @@ gip_create_license() {
 
 gip_create_readme() {
   local readme="$working_path/README.md"
+
   [ -e "$readme" ] && rm "$readme"
   touch "$readme"
 
@@ -177,10 +178,9 @@ gip_create_readme() {
 }
 
 gip_create_gitignore() {
-  # Copy .gitignore
-  GITIGNORE="$working_path/.gitignore"
-  [ -e "$GITIGNORE" ] && rm "$GITIGNORE"
-  cp "$script_path/resources/.gitignore" "$GITIGNORE"
+  local gitignore="$working_path/.gitignore"
+  [ -e "$gitignore" ] && rm "$gitignore"
+  cp "$script_path/resources/.gitignore" "$gitignore"
   gip_info ".gitignore added"
 }
 
