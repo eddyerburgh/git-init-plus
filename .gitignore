@@ -8,3 +8,5 @@
 *.sln
 
 node_modules
+
+RELEASE_NOTE.md
