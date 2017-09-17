@@ -1,6 +1,6 @@
 const version = process.env.VERSION
 const cc = require('conventional-changelog')
-const file = `./RELEASE_NOTE_${version}.md`
+const file = `./RELEASE_NOTE.md`
 const fileStream = require('fs').createWriteStream(file)
 
 cc({
