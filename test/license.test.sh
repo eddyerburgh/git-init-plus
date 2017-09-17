@@ -3,78 +3,69 @@
 ROOT_PATH=$(pwd -P)
 CURRENT_YEAR=$(date +"%Y")
 
-
 shopt -s expand_aliases
 
 [[ $(uname) == 'Darwin' ]] && {
-	# shellcheck disable=SC2015
-	which greadlink gsed >/dev/null && {
-		[[ $(type -t readlink) == "alias" ]] && unalias readlink
-		[[ $(type -t sed) == "alias" ]] && unalias sed
-		alias readlink=greadlink sed=gsed
-	} || {
-		echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
-		exit 1
-	}
+  # shellcheck disable=SC2015
+  which greadlink gsed >/dev/null && {
+    [[ $(type -t readlink) == "alias" ]] && unalias readlink
+    [[ $(type -t sed) == "alias" ]] && unalias sed
+    alias readlink=greadlink sed=gsed
+  } || {
+    echo 'ERROR: GNU utils required for Mac. You may use homebrew to install them: brew install coreutils gnu-sed'
+    exit 1
+  }
 }
 
-setUp()
-{
+setUp() {
   [ -e "temp-test-dir" ] && rm -rf "temp-test-dir"
   mkdir temp-test-dir
-  cd temp-test-dir  || exit
+  cd temp-test-dir || exit
   pwd
 }
 
-tearDown()
-{
-    cd ..
-    rm -rf temp-test-dir
+tearDown() {
+  cd ..
+  rm -rf temp-test-dir
 }
 
-test_license_is_created()
-{
+test_license_is_created() {
   "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
   exists=false
-  if test -f "LICENSE"; then exists=true;fi
+  if test -f "LICENSE"; then exists=true; fi
   assertEquals true "$exists"
 }
 
-test_mit_license_created_when_MIT_passed_as_option()
-{
+test_mit_license_created_when_MIT_passed_as_option() {
 
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
- "$ROOT_PATH/git-init-plus.sh" -l MIT -n Edd -p project
-  license_content=$(< "./LICENSE")
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
+  "$ROOT_PATH/git-init-plus.sh" -l MIT -n Edd -p project
+  license_content=$(<"./LICENSE")
   assertEquals "$mit_content" "$license_content"
 }
 
-test_mit_license_created_when_MIT_passed_as_long_option()
-{
+test_mit_license_created_when_MIT_passed_as_long_option() {
 
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
- "$ROOT_PATH/git-init-plus.sh" --license MIT -n Edd -p project
-  license_content=$(< "./LICENSE")
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
+  "$ROOT_PATH/git-init-plus.sh" --license MIT -n Edd -p project
+  license_content=$(<"./LICENSE")
   assertEquals "$mit_content" "$license_content"
 }
 
-test_isc_license_created_when_ISC_passed_as_option()
-{
-  isc_content=$( cat < "$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g"  | sed -e "s/<copyright holders>/Edd/g")
+test_isc_license_created_when_ISC_passed_as_option() {
+  isc_content=$(cat <"$ROOT_PATH/resources/licenses/ISC.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
   "$ROOT_PATH/git-init-plus.sh" -l ISC -n Edd -p project
-  license_content=$(< "./LICENSE")
+  license_content=$(<"./LICENSE")
 
   assertEquals "$isc_content" "$license_content"
 }
 
-test_error_thrown_when_l_option_does_not_exist_in_licenses()
-{
+test_error_thrown_when_l_option_does_not_exist_in_licenses() {
   "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
-   assertEquals 1 $?
+  assertEquals 1 $?
 }
 
-test_error_thrown_lists_all_licences_available_in_resources()
-{
+test_error_thrown_lists_all_licences_available_in_resources() {
   [ -e "/tmp/git-init-plus.log" ] && rm -rf "/tmp/git-init-plus.log"
   "$ROOT_PATH/git-init-plus.sh" -l DOESNOTEXIST -n Edd -p project
   licenses_list=""
@@ -91,49 +82,44 @@ test_error_thrown_lists_all_licences_available_in_resources()
   assertEquals "${expected_message}" "${log_message}"
 }
 
-test_mit_license_created_when_no_license_option_passed()
-{
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
- "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
-  license_content=$(< "./LICENSE")
+test_mit_license_created_when_no_license_option_passed() {
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" | sed -e "s/<copyright holders>/Edd/g")
+  "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
+  license_content=$(<"./LICENSE")
   assertEquals "$mit_content" "$license_content"
 }
 
-test_name_added_to_license_when_option_passed()
-{
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
- "$ROOT_PATH/git-init-plus.sh" -n "Edd Yerburgh" -p project
+test_name_added_to_license_when_option_passed() {
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g")
+  "$ROOT_PATH/git-init-plus.sh" -n "Edd Yerburgh" -p project
   contains_name=false
-  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true;fi
+  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true; fi
 
   assertTrue "$contains_name"
 }
 
-test_name_added_to_license_when_long_option_passed()
-{
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
- "$ROOT_PATH/git-init-plus.sh" --name "Edd Yerburgh" -p project
+test_name_added_to_license_when_long_option_passed() {
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g")
+  "$ROOT_PATH/git-init-plus.sh" --name "Edd Yerburgh" -p project
   contains_name=false
-  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true;fi
+  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true; fi
 
   assertTrue "$contains_name"
 }
 
-test_prompt_for_name_and_added_to_license()
-{
-  mit_content=$( cat < "$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g" )
+test_prompt_for_name_and_added_to_license() {
+  mit_content=$(cat <"$ROOT_PATH/resources/licenses/MIT.txt" | sed -e "s/<year>/$CURRENT_YEAR/g")
   printf "Edd Yerburgh\n" | "$ROOT_PATH/git-init-plus.sh" -p project
   contains_name=false
-  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true;fi
+  if grep -q "Edd Yerburgh" ./LICENSE; then contains_name=true; fi
 
   assertTrue "$contains_name"
 }
 
-test_current_year_is_added_to_license()
-{
- "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
+test_current_year_is_added_to_license() {
+  "$ROOT_PATH/git-init-plus.sh" -n Edd -p project
   contains_name=false
-  if grep -q "$(date +"%Y")" ./LICENSE; then contains_name=true;fi
+  if grep -q "$(date +"%Y")" ./LICENSE; then contains_name=true; fi
 
   assertTrue "$contains_name"
 }

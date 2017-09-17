@@ -2,22 +2,21 @@
 
 set -x -e
 
-SCRIPT_PATH="."
+readonly SCRIPT_PATH="."
 
 rm -rf /opt/git-init-plus/ || echo "no /opt/git-init-plus"
 rm /opt/git-init-plus-master.zip || echo "no /opt/git-init-plus-maste.zip"
 
-shunit2 "$SCRIPT_PATH/test/license.test.sh"
-shunit2 "$SCRIPT_PATH/test/readme.test.sh"
-shunit2 "$SCRIPT_PATH/test/git.test.sh"
-shunit2 "$SCRIPT_PATH/test/gitignore.test.sh"
-shunit2 "$SCRIPT_PATH/test/install.test.sh"
+for test_file in test/*.test.sh; do
+    shunit2 "$test_file"
+done
 
-shellcheck "$SCRIPT_PATH/test/license.test.sh"
-shellcheck "$SCRIPT_PATH/test/readme.test.sh"
-shellcheck "$SCRIPT_PATH/test/git.test.sh"
-shellcheck "$SCRIPT_PATH/test/git.test.sh"
-shellcheck "$SCRIPT_PATH/test/install.test.sh"
+for test_file in test/*.test.sh; do
+    shellcheck "$test_file"
+    [ -x "$(command -v shfmt)" ] && shfmt -i 2 -l -w "$test_file"
+done
 
-shellcheck "$SCRIPT_PATH/install.sh"
-shellcheck "$SCRIPT_PATH/git-init-plus.sh"
+for file in *.sh; do
+    shellcheck "$file"
+    [ -x "$(command -v shfmt)" ] && shfmt -i 2 -l -w "$file"
+done
