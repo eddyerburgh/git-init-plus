@@ -2,7 +2,8 @@
 
 Shell script to kick start a git project
 
-Initializes git, creates LICENSE, adds .gitignore (from [universal-gitignore](https://github.com/eddyerburgh/universal-gitignore)) and creates a README.md with your project title
+Initializes git, creates LICENSE, adds .gitignore, and creates a README.md with your project title.
+
 ## Table of contents
 
 * [Installation](#installation)
